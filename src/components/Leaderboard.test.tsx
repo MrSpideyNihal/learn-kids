@@ -31,7 +31,7 @@ describe('Leaderboard Component', () => {
   });
 
   it('renders loading animation initially', () => {
-    (global.fetch as any).mockResolvedValueOnce(new Promise(() => {})); // hung promise
+    (globalThis.fetch as any).mockResolvedValueOnce(new Promise(() => {})); // hung promise
     render(<Leaderboard activePlayerId="user-123" />);
 
     // Verify loading state is shown
@@ -48,7 +48,7 @@ describe('Leaderboard Component', () => {
       playerRank: null,
     };
 
-    (global.fetch as any).mockResolvedValueOnce({
+    (globalThis.fetch as any).mockResolvedValueOnce({
       ok: true,
       json: async () => mockData,
     });
