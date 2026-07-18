@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import confetti from 'canvas-confetti';
-import { ANIMALS, Animal } from '../data/animals';
+import { ANIMALS } from '../data/animals';
+import type { Animal } from '../data/animals';
 import soundSystem from '../utils/sound';
 
 interface MatchGameProps {

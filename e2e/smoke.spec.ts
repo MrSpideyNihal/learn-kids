@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-test('has title and renders main get started heading', async ({ page }) => {
+test('has parent gate heading on first launch', async ({ page }) => {
   await page.goto('/');
-  await expect(page.locator('h1')).toContainText('Get started');
+  await expect(page.locator('h2')).toContainText('ASK AN ADULT');
 });
