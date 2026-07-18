@@ -1,8 +1,8 @@
-import { handler } from './player';
-import { connectToDatabase } from './utils/mongodb';
+import { handler } from '../functions/player';
+import { connectToDatabase } from '../functions/utils/mongodb';
 import { describe, expect, it, vi, beforeEach } from 'vitest';
 
-vi.mock('./utils/mongodb', () => {
+vi.mock('../functions/utils/mongodb', () => {
   const mockDb = {
     collection: vi.fn().mockReturnValue({
       findOne: vi.fn(),
