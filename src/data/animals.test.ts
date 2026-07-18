@@ -8,11 +8,16 @@ describe('Animal Asset Registry', () => {
 
   it('should have valid and consistent registry items', () => {
     ANIMALS.forEach((animal) => {
-      expect(animal.id).toBeTruthy();
-      expect(animal.displayName).toBeTruthy();
-      expect(animal.imageUrl).toContain('.svg');
-      expect(animal.audioUrl).toBeTruthy();
-      expect(animal.category).toBeTruthy();
+      try {
+        expect(animal.id).toBeTruthy();
+        expect(animal.displayName).toBeTruthy();
+        expect(animal.imageUrl).toContain('.svg');
+        expect(animal.audioUrl).toBeTruthy();
+        expect(animal.category).toBeTruthy();
+      } catch (e) {
+        console.error("Failing animal:", animal);
+        throw e;
+      }
 
       const { matchObjects } = animal;
       expect(matchObjects.food).toContain('.svg');

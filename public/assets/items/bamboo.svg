@@ -1,8 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%">
-      <rect x="42" y="10" width="16" height="22" rx="4" fill="#4EAD5B" stroke="#1A1A1A" stroke-width="4"/>
-      <rect x="42" y="36" width="16" height="22" rx="4" fill="#4EAD5B" stroke="#1A1A1A" stroke-width="4"/>
-      <rect x="42" y="62" width="16" height="22" rx="4" fill="#4EAD5B" stroke="#1A1A1A" stroke-width="4"/>
-      <!-- Leaves -->
-      <path d="M58,20 Q75,15 72,25 Q62,25 58,20" fill="#3D8B48" stroke="#1A1A1A" stroke-width="3"/>
-      <path d="M42,46 Q25,40 28,50 Q38,50 42,46" fill="#3D8B48" stroke="#1A1A1A" stroke-width="3"/>
-    </svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <rect x="2" y="2" width="96" height="96" rx="16" fill="#FFFDF5" stroke="#1A1A1A" stroke-width="4" />
+  <!-- Central colorful shape representing item -->
+  <circle cx="50" cy="50" r="25" fill="#FF6B6B" stroke="#1A1A1A" stroke-width="4" />
+  <path d="M 40 45 Q 50 35 60 45 T 70 65" fill="none" stroke="#1A1A1A" stroke-width="3" stroke-linecap="round" />
+  <!-- Item label indicator -->
+  <text x="50" y="85" font-family="sans-serif" font-weight="bold" font-size="8" text-anchor="middle" fill="#1A1A1A">Bamboo</text>
+</svg>
