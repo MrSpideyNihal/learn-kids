@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%">
+      <!-- Cup -->
+      <polygon points="32,32 68,32 60,82 40,82" fill="#FF9F29" stroke="#1A1A1A" stroke-width="4" stroke-linejoin="round"/>
+      <!-- Lid -->
+      <ellipse cx="50" cy="32" rx="20" ry="6" fill="#FFFFFF" stroke="#1A1A1A" stroke-width="3"/>
+      <!-- Straw -->
+      <line x1="50" y1="32" x2="62" y2="10" stroke="#FF6B6B" stroke-width="6" stroke-linecap="round"/>
+      <line x1="50" y1="32" x2="62" y2="10" stroke="#1A1A1A" stroke-width="2" stroke-linecap="round"/>
+      <!-- Carrot emblem -->
+      <polygon points="50,65 46,55 54,55" fill="#FF6B6B" />
+    </svg>

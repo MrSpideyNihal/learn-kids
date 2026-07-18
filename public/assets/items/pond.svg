@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%">
+      <rect x="0" y="0" width="100" height="100" fill="#FFFDF5" stroke="#1A1A1A" stroke-width="4"/>
+      <!-- Water body -->
+      <ellipse cx="50" cy="50" rx="42" ry="28" fill="#38BDF8" stroke="#1A1A1A" stroke-width="4"/>
+      <!-- Cattails -->
+      <path d="M82,60 L82,30" stroke="#3D8B48" stroke-width="3" stroke-linecap="round"/>
+      <rect x="80" y="22" width="4" height="10" rx="2" fill="#8B5E3C" stroke="#1A1A1A" stroke-width="2"/>
+      <path d="M18,60 L18,30" stroke="#3D8B48" stroke-width="3" stroke-linecap="round"/>
+      <rect x="16" y="22" width="4" height="10" rx="2" fill="#8B5E3C" stroke="#1A1A1A" stroke-width="2"/>
+    </svg>
