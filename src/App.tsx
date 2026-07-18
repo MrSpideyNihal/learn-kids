@@ -23,6 +23,12 @@ function App() {
   const [studioUnlocked, setStudioUnlocked] = useState<boolean>(false);
   const [loadingProfile, setLoadingProfile] = useState<boolean>(true);
 
+  // Posters state
+  const [savedPosters, setSavedPosters] = useState<string[]>(() => {
+    const local = localStorage.getItem('savedPosters');
+    return local ? JSON.parse(local) : [];
+  });
+
   // Sync Audio states to soundSystem
   useEffect(() => {
     soundSystem.setSfxMuted(sfxMuted);
@@ -153,9 +159,16 @@ function App() {
   };
 
   const handleSavePoster = (dataUrl: string) => {
-    // Show user feedback that their drawing has been saved
-    console.log('Saved poster url prefix:', dataUrl.substring(0, 30));
-    alert("🎨 Poster saved to your album!");
+    const updated = [...savedPosters, dataUrl];
+    setSavedPosters(updated);
+    localStorage.setItem('savedPosters', JSON.stringify(updated));
+    alert("Poster saved to your gallery!");
+  };
+
+  const handleDeletePoster = (index: number) => {
+    const updated = savedPosters.filter((_, idx) => idx !== index);
+    setSavedPosters(updated);
+    localStorage.setItem('savedPosters', JSON.stringify(updated));
   };
 
   // Find avatar SVG url
@@ -195,6 +208,8 @@ function App() {
           studioUnlocked={studioUnlocked}
           onUnlockStudio={handleUnlockStudio}
           onSavePoster={handleSavePoster}
+          savedPosters={savedPosters}
+          onDeletePoster={handleDeletePoster}
         />
       )}
       {activeTab === 'leaderboard' && <Leaderboard activePlayerId={playerId} />}

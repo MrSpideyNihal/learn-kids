@@ -7,6 +7,8 @@ interface DrawingStudioProps {
   studioUnlocked: boolean;
   onUnlockStudio: () => void;
   onSavePoster: (dataUrl: string) => void;
+  savedPosters?: string[];
+  onDeletePoster?: (index: number) => void;
 }
 
 export const DrawingStudio: React.FC<DrawingStudioProps> = ({
@@ -14,6 +16,8 @@ export const DrawingStudio: React.FC<DrawingStudioProps> = ({
   studioUnlocked,
   onUnlockStudio,
   onSavePoster,
+  savedPosters = [],
+  onDeletePoster,
 }) => {
   // Canvas drawing state
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -211,7 +215,7 @@ export const DrawingStudio: React.FC<DrawingStudioProps> = ({
           </div>
 
           <div>
-            <h2 className="text-3xl font-black">Drawing Studio 🎨</h2>
+            <h2 className="text-3xl font-black">Drawing Studio</h2>
             <p className="text-gray-600 font-bold text-sm mt-1">Unlock the studio to paint and stamp cute animals!</p>
           </div>
 
@@ -238,153 +242,196 @@ export const DrawingStudio: React.FC<DrawingStudioProps> = ({
                 : 'bg-gray-300 text-gray-500 cursor-not-allowed border-gray-400 shadow-none'
             }`}
           >
-            Unlock for {UNLOCK_COST} Coins 🪙
+            Unlock for {UNLOCK_COST} Coins
           </button>
         </div>
       ) : (
         // UNLOCKED ACTIVE STUDIO STATE
-        <div className="w-full flex flex-col lg:flex-row gap-6">
-          {/* Main Drawing Canvas Card */}
-          <div className="flex-1 flex flex-col gap-4">
-            <div className="neo-box bg-white overflow-hidden shadow-[6px_6px_0_0_rgba(0,0,0,1)] aspect-[4/3] w-full relative">
-              <canvas
-                ref={canvasRef}
-                onMouseDown={handleStartDrawing}
-                onMouseMove={handleDraw}
-                onMouseUp={handleStopDrawing}
-                onMouseLeave={handleStopDrawing}
-                onTouchStart={handleStartDrawing}
-                onTouchMove={handleDraw}
-                onTouchEnd={handleStopDrawing}
-                className="w-full h-full block touch-none"
-              />
-            </div>
-
-            {/* Bottom Actions Bar */}
-            <div className="flex justify-between items-center gap-3">
-              <button
-                disabled={historyIdx <= 0}
-                onClick={handleUndo}
-                className="neo-btn p-3 bg-white hover:bg-gray-100 font-bold border-2 border-black flex-1 shadow-[2px_2px_0_0_rgba(0,0,0,1)] disabled:opacity-50 disabled:shadow-none"
-              >
-                ↩️ Undo
-              </button>
-              <button
-                onClick={handleClear}
-                className="neo-btn p-3 bg-white hover:bg-gray-100 font-bold border-2 border-black flex-1 shadow-[2px_2px_0_0_rgba(0,0,0,1)]"
-              >
-                🗑️ Clear
-              </button>
-              <button
-                onClick={handleSave}
-                className="neo-btn p-3 bg-[#4EAD5B] text-white font-black border-2 border-black flex-[2] shadow-[2px_2px_0_0_rgba(0,0,0,1)] hover:bg-[#5bbf69]"
-              >
-                🖼️ Save Poster
-              </button>
-            </div>
-          </div>
-
-          {/* Left/Right Sidebar Toolbox Panel */}
-          <div className="w-full lg:w-72 shrink-0 flex flex-col gap-6 bg-white neo-box p-5 border-4 shadow-[4px_4px_0_0_rgba(0,0,0,1)]">
-            <h3 className="text-xl font-black border-b-2 border-black pb-2">Toolbox 🛠️</h3>
-
-            {/* Brush vs Stamp vs Eraser */}
-            <div className="flex gap-2">
-              <button
-                onClick={() => {
-                  soundSystem.playTap();
-                  setTool('brush');
-                }}
-                className={`neo-btn p-2 text-sm font-bold border-2 flex-1 ${
-                  tool === 'brush' ? 'bg-[#FFDE4D]' : 'bg-white'
-                }`}
-              >
-                ✏️ Brush
-              </button>
-              <button
-                onClick={() => {
-                  soundSystem.playTap();
-                  setTool('eraser');
-                }}
-                className={`neo-btn p-2 text-sm font-bold border-2 flex-1 ${
-                  tool === 'eraser' ? 'bg-[#FF6B6B] text-white' : 'bg-white'
-                }`}
-              >
-                🧽 Eraser
-              </button>
-            </div>
-
-            {/* Size Slider */}
-            <div className="flex flex-col gap-1">
-              <div className="flex justify-between font-black text-sm">
-                <span>Size:</span>
-                <span>{brushSize}px</span>
+        <div className="w-full flex flex-col gap-6">
+          <div className="w-full flex flex-col lg:flex-row gap-6">
+            {/* Main Drawing Canvas Card */}
+            <div className="flex-1 flex flex-col gap-4">
+              <div className="neo-box bg-white overflow-hidden shadow-[6px_6px_0_0_rgba(0,0,0,1)] aspect-[4/3] w-full relative">
+                <canvas
+                  ref={canvasRef}
+                  onMouseDown={handleStartDrawing}
+                  onMouseMove={handleDraw}
+                  onMouseUp={handleStopDrawing}
+                  onMouseLeave={handleStopDrawing}
+                  onTouchStart={handleStartDrawing}
+                  onTouchMove={handleDraw}
+                  onTouchEnd={handleStopDrawing}
+                  className="w-full h-full block touch-none"
+                />
               </div>
-              <input
-                type="range"
-                min="2"
-                max="40"
-                value={brushSize}
-                onChange={(e) => setBrushSize(parseInt(e.target.value, 10))}
-                className="w-full cursor-pointer h-2 bg-gray-200 border-2 border-black rounded-lg appearance-none"
-              />
+
+              {/* Bottom Actions Bar */}
+              <div className="flex justify-between items-center gap-3">
+                <button
+                  disabled={historyIdx <= 0}
+                  onClick={handleUndo}
+                  className="neo-btn p-3 bg-white hover:bg-gray-100 font-bold border-2 border-black flex-1 shadow-[2px_2px_0_0_rgba(0,0,0,1)] disabled:opacity-50 disabled:shadow-none"
+                >
+                  Undo
+                </button>
+                <button
+                  onClick={handleClear}
+                  className="neo-btn p-3 bg-white hover:bg-gray-100 font-bold border-2 border-black flex-1 shadow-[2px_2px_0_0_rgba(0,0,0,1)]"
+                >
+                  Clear
+                </button>
+                <button
+                  onClick={handleSave}
+                  className="neo-btn p-3 bg-[#4EAD5B] text-white font-black border-2 border-black flex-[2] shadow-[2px_2px_0_0_rgba(0,0,0,1)] hover:bg-[#5bbf69]"
+                >
+                  Save Poster
+                </button>
+              </div>
             </div>
 
-            {/* Colors picker */}
-            {tool !== 'eraser' && tool !== 'stamp' && (
+            {/* Left/Right Sidebar Toolbox Panel */}
+            <div className="w-full lg:w-72 shrink-0 flex flex-col gap-6 bg-white neo-box p-5 border-4 shadow-[4px_4px_0_0_rgba(0,0,0,1)]">
+              <h3 className="text-xl font-black border-b-2 border-black pb-2 text-left">Toolbox</h3>
+
+              {/* Brush vs Stamp vs Eraser */}
+              <div className="flex gap-2">
+                <button
+                  onClick={() => {
+                    soundSystem.playTap();
+                    setTool('brush');
+                  }}
+                  className={`neo-btn p-2 text-sm font-bold border-2 flex-1 ${
+                    tool === 'brush' ? 'bg-[#FFDE4D]' : 'bg-white'
+                  }`}
+                >
+                  Brush
+                </button>
+                <button
+                  onClick={() => {
+                    soundSystem.playTap();
+                    setTool('eraser');
+                  }}
+                  className={`neo-btn p-2 text-sm font-bold border-2 flex-1 ${
+                    tool === 'eraser' ? 'bg-[#FF6B6B] text-white' : 'bg-white'
+                  }`}
+                >
+                  Eraser
+                </button>
+              </div>
+
+              {/* Size Slider */}
+              <div className="flex flex-col gap-1">
+                <div className="flex justify-between font-black text-sm">
+                  <span>Size:</span>
+                  <span>{brushSize}px</span>
+                </div>
+                <input
+                  type="range"
+                  min="2"
+                  max="40"
+                  value={brushSize}
+                  onChange={(e) => setBrushSize(parseInt(e.target.value, 10))}
+                  className="w-full cursor-pointer h-2 bg-gray-200 border-2 border-black rounded-lg appearance-none"
+                />
+              </div>
+
+              {/* Colors picker */}
+              {tool !== 'eraser' && tool !== 'stamp' && (
+                <div className="flex flex-col gap-2">
+                  <span className="font-black text-sm">Colors:</span>
+                  <div className="grid grid-cols-6 gap-2">
+                    {colors.map((c) => (
+                      <button
+                        key={c}
+                        onClick={() => {
+                          soundSystem.playTap();
+                          setColor(c);
+                        }}
+                        className={`w-8 h-8 rounded-full border-2 border-black ${
+                          color === c ? 'scale-110 shadow-[2px_2px_0_0_rgba(0,0,0,1)]' : 'opacity-80'
+                        }`}
+                        style={{ backgroundColor: c }}
+                        aria-label={`Select color ${c}`}
+                      />
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Stamps drawer */}
               <div className="flex flex-col gap-2">
-                <span className="font-black text-sm">Colors:</span>
-                <div className="grid grid-cols-6 gap-2">
-                  {colors.map((c) => (
-                    <button
-                      key={c}
-                      onClick={() => {
-                        soundSystem.playTap();
-                        setColor(c);
-                      }}
-                      className={`w-8 h-8 rounded-full border-2 border-black ${
-                        color === c ? 'scale-110 shadow-[2px_2px_0_0_rgba(0,0,0,1)]' : 'opacity-80'
-                      }`}
-                      style={{ backgroundColor: c }}
-                      aria-label={`Select color ${c}`}
-                    />
-                  ))}
+                <span className="font-black text-sm text-left">Animal Stamps:</span>
+                <div className="grid grid-cols-4 gap-2">
+                  {ANIMALS.map((animal) => {
+                    const isSelected = tool === 'stamp' && activeStampUrl === animal.imageUrl;
+                    return (
+                      <button
+                        key={animal.id}
+                        onClick={() => {
+                          soundSystem.playTap();
+                          setTool('stamp');
+                          setActiveStampUrl(animal.imageUrl);
+                        }}
+                        className={`neo-btn p-1 aspect-square flex items-center justify-center rounded-lg border-2 ${
+                          isSelected
+                            ? 'bg-[#38BDF8] scale-105 shadow-[2px_2px_0_0_rgba(0,0,0,1)]'
+                            : 'bg-white'
+                        }`}
+                        aria-label={`Select ${animal.displayName} stamp`}
+                      >
+                        <img
+                          src={animal.imageUrl}
+                          alt={animal.displayName}
+                          className="w-full h-full object-contain"
+                        />
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
-            )}
-
-            {/* Stamps drawer */}
-            <div className="flex flex-col gap-2">
-              <span className="font-black text-sm">Animal Stamps:</span>
-              <div className="grid grid-cols-4 gap-2">
-                {ANIMALS.map((animal) => {
-                  const isSelected = tool === 'stamp' && activeStampUrl === animal.imageUrl;
-                  return (
-                    <button
-                      key={animal.id}
-                      onClick={() => {
-                        soundSystem.playTap();
-                        setTool('stamp');
-                        setActiveStampUrl(animal.imageUrl);
-                      }}
-                      className={`neo-btn p-1 aspect-square flex items-center justify-center rounded-lg border-2 ${
-                        isSelected
-                          ? 'bg-[#38BDF8] scale-105 shadow-[2px_2px_0_0_rgba(0,0,0,1)]'
-                          : 'bg-white'
-                      }`}
-                      aria-label={`Select ${animal.displayName} stamp`}
-                    >
-                      <img
-                        src={animal.imageUrl}
-                        alt={animal.displayName}
-                        className="w-full h-full object-contain"
-                      />
-                    </button>
-                  );
-                })}
-              </div>
             </div>
           </div>
+
+          {/* Polaroid Poster Gallery Section */}
+          {savedPosters && savedPosters.length > 0 && (
+            <div className="w-full mt-6 flex flex-col gap-4">
+              <h3 className="text-2xl font-black border-b-4 border-black pb-2 text-left select-none">
+                My Gallery
+              </h3>
+              <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-thin scrollbar-thumb-black scrollbar-track-transparent">
+                {savedPosters.map((poster, idx) => (
+                  <div
+                    key={idx}
+                    className="neo-box bg-white p-3 border-4 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] shrink-0 w-48 relative flex flex-col gap-2"
+                  >
+                    <div className="aspect-[4/3] w-full border-2 border-black overflow-hidden bg-gray-50">
+                      <img
+                        src={poster}
+                        alt={`Saved Drawing ${idx + 1}`}
+                        className="w-full h-full object-contain select-none"
+                        draggable="false"
+                      />
+                    </div>
+                    <div className="flex items-center justify-between mt-1">
+                      <span className="font-bold text-xs text-gray-500">Painting #{idx + 1}</span>
+                      {onDeletePoster && (
+                        <button
+                          onClick={() => {
+                            soundSystem.playTap();
+                            onDeletePoster(idx);
+                          }}
+                          className="neo-btn px-2 py-1 bg-[#FF6B6B] hover:bg-[#ff8282] text-white border-2 border-black shadow-[1px_1px_0_0_rgba(0,0,0,1)] rounded-lg text-[10px] font-black uppercase"
+                          aria-label="Delete painting"
+                        >
+                          Delete
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>

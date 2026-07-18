@@ -4,6 +4,7 @@ import confetti from 'canvas-confetti';
 import { ANIMALS } from '../data/animals';
 import type { Animal } from '../data/animals';
 import soundSystem from '../utils/sound';
+import { shuffle } from '../utils/shuffle';
 
 interface GuessGameProps {
   onEarnCoins: (amount: number) => void;
@@ -20,8 +21,7 @@ export const GuessGame: React.FC<GuessGameProps> = ({ onEarnCoins }) => {
 
   // Initialize pool of animals
   const resetPool = () => {
-    const shuffled = [...ANIMALS].sort(() => Math.random() - 0.5);
-    return shuffled;
+    return shuffle(ANIMALS);
   };
 
   // Start a new round
@@ -47,22 +47,18 @@ export const GuessGame: React.FC<GuessGameProps> = ({ onEarnCoins }) => {
       );
       // Fallback to random if not enough same category
       if (sameCategory.length >= 2) {
-        wrongChoices = sameCategory.sort(() => Math.random() - 0.5).slice(0, 3);
+        wrongChoices = shuffle(sameCategory);
       } else {
-        wrongChoices = ANIMALS.filter((a) => a.id !== animal.id)
-          .sort(() => Math.random() - 0.5)
-          .slice(0, 3);
+        wrongChoices = shuffle(ANIMALS.filter((a) => a.id !== animal.id));
       }
     } else {
-      wrongChoices = ANIMALS.filter((a) => a.id !== animal.id)
-        .sort(() => Math.random() - 0.5)
-        .slice(0, 3);
+      wrongChoices = shuffle(ANIMALS.filter((a) => a.id !== animal.id));
     }
 
     // Slice options to either 3 or 4 choices based on streak (ramping up options count)
     const optionsCount = currentStreak >= 5 ? 4 : 3;
     const finalWrong = wrongChoices.slice(0, optionsCount - 1);
-    const finalOptions = [animal, ...finalWrong].sort(() => Math.random() - 0.5);
+    const finalOptions = shuffle([animal, ...finalWrong]);
 
     setOptions(finalOptions);
 
@@ -148,14 +144,14 @@ export const GuessGame: React.FC<GuessGameProps> = ({ onEarnCoins }) => {
       {/* Streak and Header Pill */}
       <div className="w-full flex justify-between items-center px-4 max-w-md">
         <div className="neo-box bg-[#9B5DE5] text-white px-4 py-2 font-black text-lg shadow-[2px_2px_0_0_rgba(0,0,0,1)] border-2">
-          Streak: {streak} 🔥
+          Streak: {streak}
         </div>
         <button
           onClick={() => soundSystem.speak(currentAnimal.displayName)}
           className="neo-btn px-4 py-2 bg-white font-bold text-sm shadow-[2px_2px_0_0_rgba(0,0,0,1)] border-2"
           aria-label="Repeat instruction"
         >
-          🔊 Speak
+          Speak
         </button>
       </div>
 
@@ -223,7 +219,7 @@ export const GuessGame: React.FC<GuessGameProps> = ({ onEarnCoins }) => {
           >
             <div className="text-2xl font-black text-center select-none">
               {isCorrect ? (
-                <span className="text-[#4EAD5B]">🎉 Super Job! +{streak >= 10 ? '20' : streak >= 5 ? '15' : streak >= 3 ? '12' : '10'} Coins</span>
+                <span className="text-[#4EAD5B]">Super Job! +{streak >= 10 ? '20' : streak >= 5 ? '15' : streak >= 3 ? '12' : '10'} Coins</span>
               ) : (
                 <span className="text-[#FF6B6B]">Oops! It's a {currentAnimal.displayName}!</span>
               )}
@@ -234,7 +230,7 @@ export const GuessGame: React.FC<GuessGameProps> = ({ onEarnCoins }) => {
               className="neo-btn w-full p-4 bg-[#FF9F29] text-white text-2xl font-black rounded-3xl border-4 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:bg-[#ffb04f] animate-pulse"
               aria-label="Next animal"
             >
-              Next Animal ➡️
+              Next Animal
             </button>
           </motion.div>
         )}

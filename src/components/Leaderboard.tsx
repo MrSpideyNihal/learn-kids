@@ -86,7 +86,7 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({ activePlayerId }) => {
     <div className="flex flex-col items-center gap-6 w-full max-w-md mx-auto">
       {/* Header Info Banner */}
       <div className="neo-box p-4 bg-[#9B5DE5] text-white w-full flex flex-col items-center gap-1 shadow-[4px_4px_0_0_rgba(0,0,0,1)] text-center border-4">
-        <h2 className="text-2xl font-black">Daily Top Ranks 🏆</h2>
+        <h2 className="text-2xl font-black">Daily Top Ranks</h2>
         <div className="text-xs font-bold bg-black/20 px-3 py-1 rounded-full mt-1">
           UTC Reset in: <span className="font-black text-[#FFDE4D]">{timeToReset}</span>
         </div>
@@ -95,13 +95,7 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({ activePlayerId }) => {
       {loading ? (
         // Playful Bouncing Loading State
         <div className="flex flex-col items-center justify-center py-20 gap-4">
-          <motion.div
-            animate={{ y: [0, -20, 0] }}
-            transition={{ repeat: Infinity, duration: 0.6, ease: 'easeInOut' }}
-            className="w-16 h-16 rounded-full bg-[#FFDE4D] border-4 border-black flex items-center justify-center shadow-[2px_2px_0_0_rgba(0,0,0,1)]"
-          >
-            <span className="text-3xl select-none">🐼</span>
-          </motion.div>
+            <div className="w-12 h-12 rounded-full border-4 border-black border-t-transparent animate-spin"></div>
           <div className="font-black text-xl text-gray-500">Loading High Scores...</div>
         </div>
       ) : error ? (
@@ -115,7 +109,7 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({ activePlayerId }) => {
             }}
             className="neo-btn px-4 py-2 bg-white font-bold border-2 mt-4 text-sm shadow-[2px_2px_0_0_rgba(0,0,0,1)]"
           >
-            🔄 Try Again
+            Try Again
           </button>
         </div>
       ) : (
@@ -125,7 +119,7 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({ activePlayerId }) => {
           <div className="flex flex-col gap-3">
             {leaderboard.length === 0 ? (
               <div className="neo-box p-6 bg-white border-2 text-center rounded-2xl text-gray-500 font-bold">
-                No high scores submitted today. Be the first! 🚀
+                No high scores submitted today. Be the first!
               </div>
             ) : (
               leaderboard.map((item) => {
@@ -164,7 +158,7 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({ activePlayerId }) => {
                         {item.nickname}
                       </span>
                       {isSelf && (
-                        <span className="text-[10px] font-black uppercase text-[#FF9F29]">You 🌟</span>
+                        <span className="text-[10px] font-black uppercase text-[#FF9F29]">You</span>
                       )}
                     </div>
 
@@ -197,7 +191,7 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({ activePlayerId }) => {
                 />
                 <div className="flex flex-col min-w-0">
                   <span className="font-black text-lg truncate pr-2">{playerRank.nickname}</span>
-                  <span className="text-[10px] font-black uppercase text-[#FF9F29]">You 🌟</span>
+                  <span className="text-[10px] font-black uppercase text-[#FF9F29]">You</span>
                 </div>
                 <div className="ml-auto neo-box bg-[#38BDF8] text-white px-3 py-1 font-black border-2 shadow-[1px_1px_0_0_rgba(0,0,0,1)] text-sm">
                   {playerRank.score} pts

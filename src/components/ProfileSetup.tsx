@@ -90,7 +90,7 @@ export const ProfileSetup: React.FC<ProfileSetupProps> = ({ onComplete }) => {
           className="neo-box p-6 sm:p-8 bg-white w-full max-w-md flex flex-col gap-6 shadow-[6px_6px_0_0_rgba(0,0,0,1)] text-center"
         >
           <div>
-            <h2 className="text-2xl font-black text-[#FF6B6B]">ASK AN ADULT 🔒</h2>
+            <h2 className="text-2xl font-black text-[#FF6B6B]">ASK AN ADULT</h2>
             <p className="text-gray-600 font-bold text-sm mt-1">Please answer this simple question to unlock nickname entry.</p>
           </div>
 
@@ -120,7 +120,7 @@ export const ProfileSetup: React.FC<ProfileSetupProps> = ({ onComplete }) => {
               type="submit"
               className="neo-btn w-full p-4 bg-[#38BDF8] text-white text-xl font-black border-4 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:bg-[#60cdff]"
             >
-              Confirm 🔓
+              Confirm
             </button>
           </form>
         </motion.div>
@@ -196,7 +196,7 @@ export const ProfileSetup: React.FC<ProfileSetupProps> = ({ onComplete }) => {
               type="submit"
               className="neo-btn w-full p-4 bg-[#4EAD5B] text-white text-2xl font-black border-4 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:bg-[#5bbf69] mt-2"
             >
-              Let's Play! 🚀
+              Let's Play!
             </button>
           </form>
         </motion.div>
