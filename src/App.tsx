@@ -154,6 +154,7 @@ function App() {
 
   const handleSavePoster = (dataUrl: string) => {
     // Show user feedback that their drawing has been saved
+    console.log('Saved poster url prefix:', dataUrl.substring(0, 30));
     alert("🎨 Poster saved to your album!");
   };
 

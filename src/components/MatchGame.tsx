@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import confetti from 'canvas-confetti';
 import { ANIMALS } from '../data/animals';
-import type { Animal } from '../data/animals';
 import soundSystem from '../utils/sound';
 
 interface MatchGameProps {
@@ -84,8 +83,6 @@ export const MatchGame: React.FC<MatchGameProps> = ({ onEarnCoins }) => {
     const shuffledAnimals = [...ANIMALS].sort(() => Math.random() - 0.5);
     const selectedAnimals = shuffledAnimals.slice(0, pairCount);
 
-    // Pick a pairing category for this round (or rotate randomly)
-    const categories: PairCategory[] = ['name', 'food', 'habitat', 'object'];
     const chosenCategory = category === 'name' ? 'name' : category; // can be selected by user or random
 
     // Create cards list
